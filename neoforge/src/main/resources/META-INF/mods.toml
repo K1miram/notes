@@ -1,13 +1,13 @@
 modLoader="javafml"
 loaderVersion="[1,)"
 license="MIT"
-#issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/"
+issueTrackerURL="https://github.com/K1miram/notes/issues"
 
 [[mods]]
 modId="notes"
 version="${mod_version}+${minecraft_version}"
 displayName="Notes"
-#displayURL="https://change.me.to.your.mods.homepage.example.invalid/"
+displayURL="https://modrinth.com/project/UyXuHsnD"
 logoFile="assets/notes/icon.png"
 authors="Kimiram"
 description='''${mod_description}'''
