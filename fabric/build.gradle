@@ -1,0 +1,13 @@
+apply plugin: 'fabric-loom'
+
+apply from: "https://raw.githubusercontent.com/henkelmax/mod-gradle-scripts/${mod_gradle_script_version}/mod.gradle"
+
+processResources {
+    from "${project(":common").projectDir}/src/main/resources"
+
+    filesMatching("fabric.mod.json") {
+        expand  "mod_version"       : mod_version,
+                "minecraft_version" : minecraft_version,
+                "mod_description"   : mod_description
+    }
+}

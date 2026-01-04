@@ -1,0 +1,17 @@
+plugins {
+    id 'java-library'
+    id 'net.neoforged.gradle.userdev' version '7.1.12'
+}
+
+apply from: "https://raw.githubusercontent.com/henkelmax/mod-gradle-scripts/${mod_gradle_script_version}/mod.gradle"
+
+processResources {
+    from("${project(":common").projectDir}/src/main/resources")
+
+    filesMatching("META-INF/mods.toml") {
+        expand  "mod_version"       : mod_version,
+                "minecraft_version" : minecraft_version,
+                "mod_description"   : mod_description,
+                "neoforge_version"  : neoforge_version
+    }
+}

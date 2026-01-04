@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "notes",
+  "version": "fabric-${mod_version}+${minecraft_version}",
+  "name": "Notes",
+  "description": "${mod_description}",
+  "authors": [
+    "Kimiram"
+  ],
+  "contact": {
+    "homepage": "",
+    "sources": ""
+  },
+  "license": "MIT",
+  "icon": "assets/notes/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "kimiram.notes.Notes"
+    ],
+    "client": [
+      "kimiram.notes.client.NotesClient"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": ">=${minecraft_version}",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
