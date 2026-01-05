@@ -85,7 +85,7 @@ public class FinalizedNoteScreen extends Screen {
     public void renderBackground(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
 
-        guiGraphics.blit(new ResourceLocation(MOD_ID, "textures/gui/note.png"),
+        guiGraphics.blit(ResourceLocation.fromNamespaceAndPath(MOD_ID, "textures/gui/note.png"),
                 (width - 128) / 2 - 16, 12, 256, 256,
                 0, 0, 256, 256, 256, 256);
     }

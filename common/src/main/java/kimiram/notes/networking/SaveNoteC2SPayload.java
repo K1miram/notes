@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import static kimiram.notes.Constants.MOD_ID;
 
 public record SaveNoteC2SPayload(ItemStack stack) implements CustomPacketPayload {
-    public static final ResourceLocation ID = new ResourceLocation(MOD_ID, "save_note");
+    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(MOD_ID, "save_note");
     public static final CustomPacketPayload.Type<SaveNoteC2SPayload> TYPE = new Type<>(ID);
     public static final StreamCodec<RegistryFriendlyByteBuf, SaveNoteC2SPayload> CODEC = StreamCodec.composite(
             ItemStack.STREAM_CODEC,

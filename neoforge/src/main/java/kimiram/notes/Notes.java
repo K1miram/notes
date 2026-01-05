@@ -105,25 +105,25 @@ public class Notes {
     public void onRegisterEvent(RegisterEvent event) {
         event.register(Registries.RECIPE_SERIALIZER, helper -> {
             helper.register(
-                    new ResourceLocation(MOD_ID, "crafting_special_notecloning"),
+                    ResourceLocation.fromNamespaceAndPath(MOD_ID, "crafting_special_notecloning"),
                     NOTE_CLONING_RECIPE_RECIPE_SERIALIZER
             );
         });
 
         event.register(Registries.RECIPE_TYPE, helper -> {
             helper.register(
-                    new ResourceLocation(MOD_ID, "crafting_special_notecloning"),
+                    ResourceLocation.fromNamespaceAndPath(MOD_ID, "crafting_special_notecloning"),
                     NoteCloningRecipe.Type.INSTANCE
             );
         });
 
         event.register(Registries.DATA_COMPONENT_TYPE, helper -> {
             helper.register(
-                    new ResourceLocation(MOD_ID, "note_content"),
+                    ResourceLocation.fromNamespaceAndPath(MOD_ID, "note_content"),
                     NOTE_COMPONENT_TYPE
             );
             helper.register(
-                    new ResourceLocation(MOD_ID, "finalized_note_content"),
+                    ResourceLocation.fromNamespaceAndPath(MOD_ID, "finalized_note_content"),
                     FINALIZED_NOTE_COMPONENT_TYPE
             );
         });

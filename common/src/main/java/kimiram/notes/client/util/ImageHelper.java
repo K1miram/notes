@@ -20,7 +20,7 @@ import static kimiram.notes.Constants.LOGGER;
 import static kimiram.notes.Constants.MOD_ID;
 
 public class ImageHelper {
-    private static final ResourceLocation DEFAULT_IMAGE = new ResourceLocation(MOD_ID, "textures/gui/default_image.png");
+    private static final ResourceLocation DEFAULT_IMAGE = ResourceLocation.fromNamespaceAndPath(MOD_ID, "textures/gui/default_image.png");
 
     private static final Map<String, ResourceLocation> loadingImages = new HashMap<>();
     private static final Map<String, DownloadedImage> downloadedImages = new HashMap<>();
@@ -29,7 +29,7 @@ public class ImageHelper {
 
     public static void downloadImage(String url) {
         if (!loadingImages.containsKey(url) && !loadedImages.containsKey(url)) {
-            ResourceLocation id = new ResourceLocation(MOD_ID, "image" + cnt);
+            ResourceLocation id = ResourceLocation.fromNamespaceAndPath(MOD_ID, "image" + cnt);
             cnt++;
             loadingImages.put(url, id);
             Thread downloadThread = new Thread(() -> {

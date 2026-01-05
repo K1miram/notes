@@ -11,7 +11,7 @@ import static kimiram.notes.Constants.MOD_ID;
 
 public class ModItems {
     public static Item register(String name, Item item) {
-        ResourceLocation id = new ResourceLocation(MOD_ID, name);
+        ResourceLocation id = ResourceLocation.fromNamespaceAndPath(MOD_ID, name);
         return Registry.register(BuiltInRegistries.ITEM, id, item);
     }
 

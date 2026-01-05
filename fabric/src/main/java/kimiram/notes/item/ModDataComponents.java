@@ -12,13 +12,13 @@ import static kimiram.notes.Constants.MOD_ID;
 public class ModDataComponents {
     public static final DataComponentType<NoteContent> NOTE_COMPONENT_TYPE = Registry.register(
             BuiltInRegistries.DATA_COMPONENT_TYPE,
-            new ResourceLocation(MOD_ID, "note_content"),
+            ResourceLocation.fromNamespaceAndPath(MOD_ID, "note_content"),
             DataComponentType.<NoteContent>builder().persistent(NoteContent.CODEC).build()
     );
 
     public static final DataComponentType<FinalizedNoteContent> FINALIZED_NOTE_COMPONENT_TYPE = Registry.register(
             BuiltInRegistries.DATA_COMPONENT_TYPE,
-            new ResourceLocation(MOD_ID, "finalized_note_content"),
+            ResourceLocation.fromNamespaceAndPath(MOD_ID, "finalized_note_content"),
             DataComponentType.<FinalizedNoteContent>builder().persistent(FinalizedNoteContent.CODEC).build()
     );
 
