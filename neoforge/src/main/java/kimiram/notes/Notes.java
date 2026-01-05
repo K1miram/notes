@@ -11,7 +11,6 @@ import kimiram.notes.networking.SaveNoteC2SPayload;
 import kimiram.notes.recipe.NoteCloningRecipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.component.DataComponentType;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -20,8 +19,8 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
@@ -44,7 +43,7 @@ public class Notes {
             "finalized_note", FinalizedNoteItem::new
     );
 
-    public static final RecipeSerializer<NoteCloningRecipe> NOTE_CLONING_RECIPE_RECIPE_SERIALIZER = new SimpleCraftingRecipeSerializer<>(NoteCloningRecipe::new);
+    public static final RecipeSerializer<NoteCloningRecipe> NOTE_CLONING_RECIPE_RECIPE_SERIALIZER = new CustomRecipe.Serializer<>(NoteCloningRecipe::new);
 
     public static final DataComponentType<NoteContent> NOTE_COMPONENT_TYPE = DataComponentType.<NoteContent>builder().persistent(NoteContent.CODEC).build();
     public static final DataComponentType<FinalizedNoteContent> FINALIZED_NOTE_COMPONENT_TYPE = DataComponentType.<FinalizedNoteContent>builder().persistent(FinalizedNoteContent.CODEC).build();
@@ -81,16 +80,14 @@ public class Notes {
                     ItemStack stack = payload.stack();
                     NoteContent noteContent = stack.get(NOTE_COMPONENT_TYPE);
                     stack.remove(NOTE_COMPONENT_TYPE);
-                    stack.remove(DataComponents.MAX_STACK_SIZE);
-                    ItemStack newStack = new ItemStack(FINALIZED_NOTE.get());
-                    newStack.applyComponents(stack.getComponents());
+                    ItemStack newStack = stack.transmuteCopy(FINALIZED_NOTE);
                     if (noteContent != null) {
                         FinalizedNoteContent finalizedNoteContent = new FinalizedNoteContent(Filterable.passThrough(Component.literal(noteContent.text())), noteContent.images());
                         newStack.set(FINALIZED_NOTE_COMPONENT_TYPE, finalizedNoteContent);
                     }
-                    if (player.getItemInHand(InteractionHand.MAIN_HAND).is(NOTE.get())) {
+                    if (player.getItemInHand(InteractionHand.MAIN_HAND).is(NOTE)) {
                         player.setItemInHand(InteractionHand.MAIN_HAND, newStack);
-                    } else if (player.getItemInHand(InteractionHand.OFF_HAND).is(NOTE.get())) {
+                    } else if (player.getItemInHand(InteractionHand.OFF_HAND).is(NOTE)) {
                         player.setItemInHand(InteractionHand.OFF_HAND, newStack);
                     }
                 });

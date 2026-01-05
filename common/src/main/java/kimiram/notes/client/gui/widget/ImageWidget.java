@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
@@ -60,7 +61,8 @@ public class ImageWidget extends AbstractWidget {
         }
 
         ResourceLocation id = ImageHelper.getImageID(imageUrl);
-        guiGraphics.blit(id, getX(), getY(), width, height, 0, 0, width, height, width, height);
+        guiGraphics.blit(RenderType::guiTextured, id, getX(), getY(), 0, 0,
+                width, height, width, height, width, height);
     }
 
     public boolean changeCursor(double mouseX, double mouseY) {

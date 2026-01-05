@@ -281,8 +281,8 @@ public class TextFieldWidget extends AbstractWidget {
             if (atTheEnd) {
                 guiGraphics.drawString(font, "_", cursorPos.x, cursorPos.y, 0xFF000000, false);
             } else {
-                guiGraphics.fill(cursorPos.x - 1, cursorPos.y - 1, cursorPos.x, cursorPos.y + 9,
-                        0xFF000000);
+                guiGraphics.fill(cursorPos.x - 1, cursorPos.y - 1,
+                        cursorPos.x, cursorPos.y + 9, 0xFF000000);
             }
         }
     }

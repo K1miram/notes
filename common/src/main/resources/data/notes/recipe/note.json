@@ -2,21 +2,11 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "minecraft:paper"
-    },
-    {
-      "item": "minecraft:feather"
-    },
-    {
-      "item": "minecraft:red_dye"
-    },
-    {
-      "item": "minecraft:green_dye"
-    },
-    {
-      "item": "minecraft:blue_dye"
-    }
+    "minecraft:paper",
+    "minecraft:feather",
+    "minecraft:red_dye",
+    "minecraft:green_dye",
+    "minecraft:blue_dye"
   ],
   "result": {
     "id": "notes:note",

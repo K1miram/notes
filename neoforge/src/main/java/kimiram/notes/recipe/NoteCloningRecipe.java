@@ -2,7 +2,6 @@ package kimiram.notes.recipe;
 
 import kimiram.notes.Notes;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
@@ -70,12 +69,7 @@ public class NoteCloningRecipe extends CustomRecipe {
     }
 
     @Override
-    public boolean canCraftInDimensions(int width, int height) {
-        return width * height >= 2;
-    }
-
-    @Override
-    public @NotNull RecipeSerializer<?> getSerializer() {
+    public @NotNull RecipeSerializer<NoteCloningRecipe> getSerializer() {
         return Notes.NOTE_CLONING_RECIPE_RECIPE_SERIALIZER;
     }
 
