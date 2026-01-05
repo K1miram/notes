@@ -67,25 +67,10 @@ public class NoteCloningRecipe extends CustomRecipe {
         }
 
         if (cnt > 0) {
-            return finNote.copyWithCount(cnt);
+            return finNote.copyWithCount(cnt + 1);
         } else {
             return ItemStack.EMPTY;
         }
-    }
-
-    @Override
-    public @NotNull NonNullList<ItemStack> getRemainingItems(CraftingContainer container) {
-        NonNullList<ItemStack> defaultedList = NonNullList.withSize(container.getContainerSize(), ItemStack.EMPTY);
-
-        for (int i = 0; i < defaultedList.size(); i++) {
-            ItemStack itemStack = container.getItem(i);
-            if (itemStack.is(Notes.FINALIZED_NOTE)) {
-                defaultedList.set(i, itemStack.copyWithCount(1));
-                break;
-            }
-        }
-
-        return defaultedList;
     }
 
     @Override
