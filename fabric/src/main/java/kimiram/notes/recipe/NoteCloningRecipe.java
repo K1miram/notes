@@ -3,12 +3,8 @@ package kimiram.notes.recipe;
 import kimiram.notes.item.ModItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
-import net.minecraft.world.item.crafting.CustomRecipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,8 +16,8 @@ public class NoteCloningRecipe extends CustomRecipe {
     }
 
     @Override
-    public boolean matches(CraftingContainer container, @NotNull Level level) {
-        List<ItemStack> stacks = container.getItems();
+    public boolean matches(CraftingInput input, @NotNull Level level) {
+        List<ItemStack> stacks = input.items();
         boolean bl1 = false, bl2 = false;
         for (ItemStack stack: stacks) {
             if (!stack.isEmpty()) {
@@ -44,8 +40,8 @@ public class NoteCloningRecipe extends CustomRecipe {
     }
 
     @Override
-    public @NotNull ItemStack assemble(CraftingContainer container, HolderLookup.@NotNull Provider registries) {
-        List<ItemStack> stacks = container.getItems();
+    public @NotNull ItemStack assemble(CraftingInput input, HolderLookup.@NotNull Provider registries) {
+        List<ItemStack> stacks = input.items();
         ItemStack finNote = ItemStack.EMPTY;
         int cnt = 0;
         for (ItemStack stack: stacks) {
@@ -67,25 +63,10 @@ public class NoteCloningRecipe extends CustomRecipe {
         }
 
         if (cnt > 0) {
-            return finNote.copyWithCount(cnt);
+            return finNote.copyWithCount(cnt + 1);
         } else {
             return ItemStack.EMPTY;
         }
-    }
-
-    @Override
-    public @NotNull NonNullList<ItemStack> getRemainingItems(CraftingContainer container) {
-        NonNullList<ItemStack> defaultedList = NonNullList.withSize(container.getContainerSize(), ItemStack.EMPTY);
-
-        for (int i = 0; i < defaultedList.size(); i++) {
-            ItemStack itemStack = container.getItem(i);
-            if (itemStack.is(ModItems.FINALIZED_NOTE)) {
-                defaultedList.set(i, itemStack.copyWithCount(1));
-                break;
-            }
-        }
-
-        return defaultedList;
     }
 
     @Override
