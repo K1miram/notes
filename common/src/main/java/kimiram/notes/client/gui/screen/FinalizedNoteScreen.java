@@ -2,12 +2,11 @@ package kimiram.notes.client.gui.screen;
 
 import kimiram.notes.Image;
 import kimiram.notes.client.util.ImageHelper;
+import kimiram.notes.item.component.FinalizedNoteContent;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
@@ -26,35 +25,20 @@ import static kimiram.notes.Constants.MOD_ID;
 public class FinalizedNoteScreen extends Screen {
     private int X_OFFSET;
 
-    private FormattedText text;
+    protected DataComponentType<FinalizedNoteContent> FINALIZED_NOTE_COMPONENT_TYPE;
+    private final FormattedText text;
     private List<FormattedCharSequence> lines;
-    private final List<Image> images = new ArrayList<>();
+    private List<Image> images = new ArrayList<>();
 
-    public FinalizedNoteScreen(ItemStack stack) {
+    public FinalizedNoteScreen(ItemStack stack, DataComponentType<FinalizedNoteContent> componentType) {
         super(Component.literal("Finalized Note Screen"));
 
-        CompoundTag tag = stack.getTag();
-        if (tag != null) {
-            CompoundTag noteContent = tag.getCompound("finalized_note_content");
-            String string = noteContent.getString("text");
-            try {
-                text = Component.Serializer.fromJson(string);
-                if (text == null) {
-                    text = FormattedText.EMPTY;
-                }
-            } catch (Exception e) {
-                text = FormattedText.of(string);
-            }
-            ListTag imagesTag = noteContent.getList("images", Tag.TAG_COMPOUND);
-            for (Tag tag1: imagesTag) {
-                CompoundTag imageTag = (CompoundTag) tag1;
-                String url = imageTag.getString("url");
-                int x = imageTag.getInt("x");
-                int y = imageTag.getInt("y");
-                int width = imageTag.getInt("width");
-                int height = imageTag.getInt("height");
-                images.add(new Image(url, x, y, width, height));
-            }
+        FINALIZED_NOTE_COMPONENT_TYPE = componentType;
+
+        FinalizedNoteContent content = stack.get(FINALIZED_NOTE_COMPONENT_TYPE);
+        if (content != null) {
+            text = content.text().get(false);
+            images = content.images();
         } else {
             text = FormattedText.EMPTY;
         }

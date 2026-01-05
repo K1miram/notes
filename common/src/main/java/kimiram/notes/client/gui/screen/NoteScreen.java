@@ -4,11 +4,13 @@ import kimiram.notes.Image;
 import kimiram.notes.client.gui.cursor.StandardCursors;
 import kimiram.notes.client.gui.widget.ImageWidget;
 import kimiram.notes.client.gui.widget.TextFieldWidget;
+import kimiram.notes.item.component.NoteContent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.nbt.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -24,38 +26,29 @@ public class NoteScreen extends Screen {
     public int X_OFFSET;
     public final int Y_OFFSET = 20;
 
-    protected ItemStack stack;
+    protected final ItemStack stack;
+    protected DataComponentType<NoteContent> NOTE_COMPONENT_TYPE;
     protected String text;
-    protected final List<Image> images = new ArrayList<>();
+    protected List<Image> images = new ArrayList<>();
 
     private TextFieldWidget textFieldWidget;
     private final List<ImageWidget> imageWidgets = new ArrayList<>();
 
-    public NoteScreen(ItemStack stack) {
+    public NoteScreen(ItemStack stack, DataComponentType<NoteContent> componentType) {
         super(Component.literal("Note Screen"));
 
         this.stack = stack;
+        NOTE_COMPONENT_TYPE = componentType;
 
-        CompoundTag tag = stack.getTag();
-        if (tag != null) {
-            CompoundTag noteContent = tag.getCompound("note_content");
-            text = noteContent.getString("text");
-
-            ListTag imagesTag = noteContent.getList("images", Tag.TAG_COMPOUND);
-            for (Tag tag1: imagesTag) {
-                CompoundTag imageTag = (CompoundTag) tag1;
-                String url = imageTag.getString("url");
-                int x = imageTag.getInt("x");
-                int y = imageTag.getInt("y");
-                int width = imageTag.getInt("width");
-                int height = imageTag.getInt("height");
-                images.add(new Image(url, x, y, width, height));
-            }
+        NoteContent noteContent = stack.get(NOTE_COMPONENT_TYPE);
+        if (noteContent != null) {
+            text = noteContent.text();
+            images = noteContent.images();
         }
     }
 
     protected void updateImages() {
-        images.clear();
+        images = new ArrayList<>();
         for (ImageWidget widget: imageWidgets) {
             if (widget.visible && widget.active) {
                 images.add(new Image(widget.getImageUrl(),
@@ -68,23 +61,8 @@ public class NoteScreen extends Screen {
     protected void saveNote() {
         text = textFieldWidget.getText();
         updateImages();
-
-        CompoundTag tag = stack.getTag() != null ? stack.getTag() : new CompoundTag();
-        CompoundTag noteContent = new CompoundTag();
-        noteContent.put("text", StringTag.valueOf(text));
-        ListTag imagesTag = new ListTag();
-        for (Image image: images) {
-            CompoundTag imageTag = new CompoundTag();
-            imageTag.put("url", StringTag.valueOf(image.url() != null ? image.url() : ""));
-            imageTag.put("x", IntTag.valueOf(image.x()));
-            imageTag.put("y", IntTag.valueOf(image.y()));
-            imageTag.put("width", IntTag.valueOf(image.width()));
-            imageTag.put("height", IntTag.valueOf(image.height()));
-            imagesTag.add(imageTag);
-        }
-        noteContent.put("images", imagesTag);
-        tag.put("note_content", noteContent);
-        stack.setTag(tag);
+        NoteContent noteContent = new NoteContent(text, images);
+        stack.set(NOTE_COMPONENT_TYPE, noteContent);
     }
 
     @Override
@@ -94,8 +72,6 @@ public class NoteScreen extends Screen {
     }
 
     protected void finalizeNote() {
-        StandardCursors.ARROW.applyTo(Minecraft.getInstance().getWindow());
-        Minecraft.getInstance().setScreen(null);
     }
 
     private void openAddImageScreen() {

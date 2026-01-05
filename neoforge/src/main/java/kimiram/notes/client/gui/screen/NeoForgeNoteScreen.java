@@ -1,26 +1,27 @@
 package kimiram.notes.client.gui.screen;
 
-import kimiram.notes.networking.FinalizeNoteC2SPacket;
-import kimiram.notes.networking.SaveNoteC2SPacket;
+import kimiram.notes.Notes;
+import kimiram.notes.networking.FinalizeNoteC2SPayload;
+import kimiram.notes.networking.SaveNoteC2SPayload;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class NeoForgeNoteScreen extends NoteScreen {
     public NeoForgeNoteScreen(ItemStack stack) {
-        super(stack);
+        super(stack, Notes.NOTE_COMPONENT_TYPE);
     }
 
     @Override
     public void onClose() {
         saveNote();
-        PacketDistributor.SERVER.noArg().send(new SaveNoteC2SPacket(stack));
+        PacketDistributor.sendToServer(new SaveNoteC2SPayload(stack));
         super.onClose();
     }
 
     @Override
     protected void finalizeNote() {
         saveNote();
-        PacketDistributor.SERVER.noArg().send(new FinalizeNoteC2SPacket(stack));
-        super.finalizeNote();
+        PacketDistributor.sendToServer(new FinalizeNoteC2SPayload(stack));
+        super.onClose();
     }
 }

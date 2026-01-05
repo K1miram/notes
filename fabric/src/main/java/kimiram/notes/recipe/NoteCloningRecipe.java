@@ -1,8 +1,8 @@
 package kimiram.notes.recipe;
 
 import kimiram.notes.item.ModItems;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
@@ -44,7 +44,7 @@ public class NoteCloningRecipe extends CustomRecipe {
     }
 
     @Override
-    public @NotNull ItemStack assemble(CraftingContainer container, @NotNull RegistryAccess registryAccess) {
+    public @NotNull ItemStack assemble(CraftingContainer container, HolderLookup.@NotNull Provider registries) {
         List<ItemStack> stacks = container.getItems();
         ItemStack finNote = ItemStack.EMPTY;
         int cnt = 0;

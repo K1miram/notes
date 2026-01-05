@@ -1,7 +1,6 @@
 package kimiram.notes.client.gui.widget;
 
 import kimiram.notes.client.gui.cursor.StandardCursors;
-import net.minecraft.SharedConstants;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.StringSplitter;
@@ -16,6 +15,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
+import net.minecraft.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
@@ -116,7 +116,7 @@ public class TextFieldWidget extends AbstractWidget {
     public boolean charTyped(char codePoint, int modifiers) {
         if (super.charTyped(codePoint, modifiers)) {
             return true;
-        } else if (SharedConstants.isAllowedChatCharacter(codePoint)) {
+        } else if (StringUtil.isAllowedChatCharacter(codePoint)) {
             textFieldHelper.insertText(Character.toString(codePoint));
             updateLines();
             return true;

@@ -19,7 +19,7 @@
     }
   ],
   "result": {
-    "item": "notes:note",
+    "id": "notes:note",
     "count": 1
   }
 }
