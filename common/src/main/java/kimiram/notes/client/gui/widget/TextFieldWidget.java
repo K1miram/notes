@@ -257,7 +257,7 @@ public class TextFieldWidget extends AbstractWidget {
                     int j = rect2i.getY();
                     int k = i + rect2i.getWidth();
                     int l = j + rect2i.getHeight();
-                    guiGraphics.fill(RenderPipelines.GUI_TEXT_HIGHLIGHT, i, j, k, l, -16776961);
+                    guiGraphics.textHighlight(i, j, k, l);
                 }
 
                 drawCursor(guiGraphics, textFieldHelper.getCursorPos() == text.length());
