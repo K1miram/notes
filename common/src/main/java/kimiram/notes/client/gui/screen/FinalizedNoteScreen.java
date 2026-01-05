@@ -6,7 +6,7 @@ import kimiram.notes.item.component.FinalizedNoteContent;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
@@ -71,7 +71,7 @@ public class FinalizedNoteScreen extends Screen {
         for (int i = images.size() - 1; i >= 0; i--) {
             Image image = images.get(i);
             ResourceLocation id = ImageHelper.getImageID(image.url());
-            guiGraphics.blit(RenderType::guiTextured, id, image.x() + X_OFFSET, image.y() + 22,
+            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, id, image.x() + X_OFFSET, image.y() + 22,
                     0, 0, image.width(), image.height(),
                     image.width(), image.height(), image.width(), image.height());
         }
@@ -86,7 +86,7 @@ public class FinalizedNoteScreen extends Screen {
     public void renderBackground(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
 
-        guiGraphics.blit(RenderType::guiTextured, ResourceLocation.fromNamespaceAndPath(MOD_ID, "textures/gui/note.png"),
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, ResourceLocation.fromNamespaceAndPath(MOD_ID, "textures/gui/note.png"),
                 (width - 128) / 2 - 16, 12, 0, 0,
                 256, 256, 256, 256, 256, 256);
     }

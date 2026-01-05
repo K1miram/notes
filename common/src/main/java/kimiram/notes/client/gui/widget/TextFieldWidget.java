@@ -11,7 +11,7 @@ import net.minecraft.client.gui.font.TextFieldHelper;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.Rect2i;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -257,7 +257,7 @@ public class TextFieldWidget extends AbstractWidget {
                     int j = rect2i.getY();
                     int k = i + rect2i.getWidth();
                     int l = j + rect2i.getHeight();
-                    guiGraphics.fill(RenderType.guiTextHighlight(), i, j, k, l, -16776961);
+                    guiGraphics.fill(RenderPipelines.GUI_TEXT_HIGHLIGHT, i, j, k, l, -16776961);
                 }
 
                 drawCursor(guiGraphics, textFieldHelper.getCursorPos() == text.length());
