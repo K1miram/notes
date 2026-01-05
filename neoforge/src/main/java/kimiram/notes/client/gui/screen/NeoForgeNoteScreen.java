@@ -4,7 +4,7 @@ import kimiram.notes.Notes;
 import kimiram.notes.networking.FinalizeNoteC2SPayload;
 import kimiram.notes.networking.SaveNoteC2SPayload;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class NeoForgeNoteScreen extends NoteScreen {
     public NeoForgeNoteScreen(ItemStack stack) {
@@ -14,14 +14,14 @@ public class NeoForgeNoteScreen extends NoteScreen {
     @Override
     public void onClose() {
         saveNote();
-        PacketDistributor.sendToServer(new SaveNoteC2SPayload(stack));
+        ClientPacketDistributor.sendToServer(new SaveNoteC2SPayload(stack));
         super.onClose();
     }
 
     @Override
     protected void finalizeNote() {
         saveNote();
-        PacketDistributor.sendToServer(new FinalizeNoteC2SPayload(stack));
+        ClientPacketDistributor.sendToServer(new FinalizeNoteC2SPayload(stack));
         super.onClose();
     }
 }
