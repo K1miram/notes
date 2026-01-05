@@ -58,7 +58,7 @@ public class ImageHelper {
 
                 NativeImage nativeImage = NativeImage.read(new ByteArrayInputStream(bytes));
                 TextureManager textureManager = Minecraft.getInstance().getTextureManager();
-                DynamicTexture texture = new DynamicTexture(nativeImage);
+                DynamicTexture texture = new DynamicTexture(nativeImage::toString, nativeImage);
                 textureManager.register(id, texture);
 
                 int width = nativeImage.getWidth(), height = nativeImage.getHeight();

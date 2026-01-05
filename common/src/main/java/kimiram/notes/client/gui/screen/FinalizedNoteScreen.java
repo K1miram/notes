@@ -110,7 +110,7 @@ public class FinalizedNoteScreen extends Screen {
             return false;
         } else {
             boolean bl = super.handleComponentClicked(style);
-            if (bl && clickEvent.getAction() == ClickEvent.Action.RUN_COMMAND) {
+            if (bl && clickEvent.action() == ClickEvent.Action.RUN_COMMAND) {
                 onClose();
             }
 
