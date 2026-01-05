@@ -11,7 +11,6 @@ import kimiram.notes.networking.SaveNoteC2SPayload;
 import kimiram.notes.recipe.NoteCloningRecipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.component.DataComponentType;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -81,9 +80,7 @@ public class Notes {
                     ItemStack stack = payload.stack();
                     NoteContent noteContent = stack.get(NOTE_COMPONENT_TYPE);
                     stack.remove(NOTE_COMPONENT_TYPE);
-                    stack.remove(DataComponents.MAX_STACK_SIZE);
-                    ItemStack newStack = new ItemStack(FINALIZED_NOTE.get());
-                    newStack.applyComponents(stack.getComponents());
+                    ItemStack newStack = stack.transmuteCopy(FINALIZED_NOTE);
                     if (noteContent != null) {
                         FinalizedNoteContent finalizedNoteContent = new FinalizedNoteContent(Filterable.passThrough(Component.literal(noteContent.text())), noteContent.images());
                         newStack.set(FINALIZED_NOTE_COMPONENT_TYPE, finalizedNoteContent);

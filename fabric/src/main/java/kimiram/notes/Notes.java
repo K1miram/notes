@@ -10,7 +10,6 @@ import kimiram.notes.recipe.ModRecipes;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.Filterable;
@@ -37,9 +36,7 @@ public class Notes implements ModInitializer {
             ItemStack stack = payload.stack();
             NoteContent noteContent = stack.get(ModDataComponents.NOTE_COMPONENT_TYPE);
             stack.remove(ModDataComponents.NOTE_COMPONENT_TYPE);
-            stack.remove(DataComponents.MAX_STACK_SIZE);
-            ItemStack newStack = new ItemStack(ModItems.FINALIZED_NOTE);
-            newStack.applyComponents(stack.getComponents());
+            ItemStack newStack = stack.transmuteCopy(ModItems.FINALIZED_NOTE);
             if (noteContent != null) {
                 FinalizedNoteContent finalizedNoteContent = new FinalizedNoteContent(Filterable.passThrough(Component.literal(noteContent.text())), noteContent.images());
                 newStack.set(ModDataComponents.FINALIZED_NOTE_COMPONENT_TYPE, finalizedNoteContent);
