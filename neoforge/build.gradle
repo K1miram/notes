@@ -6,8 +6,6 @@ plugins {
 apply from: "https://raw.githubusercontent.com/henkelmax/mod-gradle-scripts/${mod_gradle_script_version}/mod.gradle"
 
 processResources {
-    from("${project(":common").projectDir}/src/main/resources")
-
     filesMatching("META-INF/neoforge.mods.toml") {
         expand  "mod_version"       : mod_version,
                 "minecraft_version" : minecraft_version,

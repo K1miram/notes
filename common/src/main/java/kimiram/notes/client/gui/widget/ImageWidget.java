@@ -1,12 +1,14 @@
 package kimiram.notes.client.gui.widget;
 
 import com.mojang.blaze3d.platform.Window;
+import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import kimiram.notes.client.gui.cursor.StandardCursors;
 import kimiram.notes.client.util.ImageHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -57,7 +59,11 @@ public class ImageWidget extends AbstractWidget {
 
     public void renderImage(GuiGraphics guiGraphics) {
         if (isHoveredOrFocused()) {
-            guiGraphics.renderOutline(getX(), getY(), width, height, 0x5F5F5F5F);
+            int x = getX(), y = getY();
+            guiGraphics.fill(x, y, x + width, y + 1, 0x5F5F5F5F);
+            guiGraphics.fill(x + width - 1, y, x + width, y + height, 0x5F5F5F5F);
+            guiGraphics.fill(x, y + height - 1, x + width, y + height, 0x5F5F5F5F);
+            guiGraphics.fill(x, y, x + 1, y + height, 0x5F5F5F5F);
         }
 
         ResourceLocation id = ImageHelper.getImageID(imageUrl);
@@ -65,35 +71,32 @@ public class ImageWidget extends AbstractWidget {
                 width, height, width, height, width, height);
     }
 
-    public boolean changeCursor(double mouseX, double mouseY) {
-        Window window = Minecraft.getInstance().getWindow();
+    public boolean changeCursor(GuiGraphics guiGraphics, double mouseX, double mouseY) {
         if (xside != null || yside != null) {
             if ((xside == Sides.LEFT && yside == Sides.TOP) || (xside == Sides.RIGHT && yside == Sides.BOTTOM)) {
-                StandardCursors.RESIZE_NWSE.applyTo(window);
+                guiGraphics.requestCursor(StandardCursors.RESIZE_NWSE);
             } else if ((xside == Sides.LEFT && yside == Sides.BOTTOM) || (xside == Sides.RIGHT && yside == Sides.TOP)) {
-                StandardCursors.RESIZE_NESW.applyTo(window);
+                guiGraphics.requestCursor(StandardCursors.RESIZE_NESW);
             } else if (xside != null) {
-                StandardCursors.RESIZE_EW.applyTo(window);
+                guiGraphics.requestCursor(StandardCursors.RESIZE_EW);
             } else {
-                StandardCursors.RESIZE_NS.applyTo(window);
+                guiGraphics.requestCursor(StandardCursors.RESIZE_NS);
             }
             return true;
         } else {
             if (isMouseOver(mouseX, mouseY)) {
                 if ((isLeft(mouseX) && isTop(mouseY)) || (isRight(mouseX) && isBottom(mouseY))) {
-                    StandardCursors.RESIZE_NWSE.applyTo(window);
+                    guiGraphics.requestCursor(StandardCursors.RESIZE_NWSE);
                 } else if ((isLeft(mouseX) && isBottom(mouseY)) || (isRight(mouseX) && isTop(mouseY))) {
-                    StandardCursors.RESIZE_NESW.applyTo(window);
+                    guiGraphics.requestCursor(StandardCursors.RESIZE_NESW);
                 } else if (isLeft(mouseX) || isRight(mouseX)) {
-                    StandardCursors.RESIZE_EW.applyTo(window);
+                    guiGraphics.requestCursor(StandardCursors.RESIZE_EW);
                 } else if (isTop(mouseY) || isBottom(mouseY)) {
-                    StandardCursors.RESIZE_NS.applyTo(window);
+                    guiGraphics.requestCursor(StandardCursors.RESIZE_NS);
                 } else {
-                    StandardCursors.ARROW.applyTo(window);
+                    guiGraphics.requestCursor(StandardCursors.ARROW);
                 }
                 return true;
-            } else {
-                StandardCursors.ARROW.applyTo(window);
             }
         }
         return false;
@@ -116,67 +119,65 @@ public class ImageWidget extends AbstractWidget {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (active && visible) {
-            if (isMouseOver(mouseX, mouseY)) {
-                if (button == 0) {
-                    if (isLeft(mouseX)) {
-                        xside = Sides.LEFT;
-                    } else if (isRight(mouseX)) {
-                        xside = Sides.RIGHT;
-                    }
-
-                    if (isTop(mouseY)) {
-                        yside = Sides.TOP;
-                    } else if (isBottom(mouseY)) {
-                        yside = Sides.BOTTOM;
-                    }
-
-                    return true;
+    public boolean mouseClicked(@NotNull MouseButtonEvent event, boolean isDoubleClick) {
+        if (isMouseOver(event.x(), event.y())) {
+            if (event.button() == 0) {
+                if (isLeft(event.x())) {
+                    xside = Sides.LEFT;
+                } else if (isRight(event.x())) {
+                    xside = Sides.RIGHT;
                 }
-                if (button == 1) {
-                    active = false;
-                    visible = false;
 
-                    playDownSound(Minecraft.getInstance().getSoundManager());
-
-                    return true;
+                if (isTop(event.y())) {
+                    yside = Sides.TOP;
+                } else if (isBottom(event.y())) {
+                    yside = Sides.BOTTOM;
                 }
+
+                return true;
+            }
+            if (event.button() == 1) {
+                active = false;
+                visible = false;
+
+                playDownSound(Minecraft.getInstance().getSoundManager());
+
+                return true;
             }
         }
         return false;
     }
 
     @Override
-    protected void onDrag(double mouseX, double mouseY, double dragX, double dragY) {
+    protected void onDrag(@NotNull MouseButtonEvent event, double mouseX, double mouseY) {
         if (xside == Sides.LEFT) {
-            if (dwidth - dragX >= 5 && dx + dragX >= leftBorder) {
-                dwidth -= dragX;
+            if (dwidth - mouseX >= 5 && dx + mouseX >= leftBorder) {
+                dwidth -= mouseX;
                 dx = getX() + width - (int) dwidth;
             }
         } else if (xside == Sides.RIGHT) {
-            if (dwidth + dragX >= 5 && dx + dwidth + dragX <= rightBorder) {
-                dwidth += dragX;
+            if (dwidth + mouseX >= 5 && dx + dwidth + mouseX <= rightBorder) {
+                dwidth += mouseX;
             }
         }
 
         if (yside == Sides.TOP) {
-            if (dheight - dragY >= 5 && dy + dragY >= topBorder) {
-                dheight -= dragY;
+            if (dheight - mouseY >= 5 && dy + mouseY >= topBorder) {
+                dheight -= mouseY;
                 dy = getY() + height - (int) dheight;
             }
         } else if (yside == Sides.BOTTOM) {
-            if (dheight + dragY >= 5 && dy + dheight + dragY <= bottomBorder) {
-                dheight += dragY;
+            if (dheight + mouseY >= 5 && dy + dheight + mouseY <= bottomBorder) {
+                dheight += mouseY;
             }
         }
 
         if (xside == null && yside == null) {
-            if (dx + dragX >= leftBorder && dx + dragX + dwidth <= rightBorder) {
-                dx += dragX;
+            if (dx + mouseX >= leftBorder && dx + mouseX + dwidth <= rightBorder) {
+                dx += mouseX;
             }
-            if (dy + dragY >= topBorder && dy + dragY + dheight <= bottomBorder) {
-                dy += dragY;
+            if (dy + mouseY >= topBorder && dy + mouseY + dheight <= bottomBorder) {
+                dy += mouseY;
             }
         }
 
@@ -184,7 +185,7 @@ public class ImageWidget extends AbstractWidget {
     }
 
     @Override
-    public void onRelease(double mouseX, double mouseY) {
+    public void onRelease(@NotNull MouseButtonEvent event) {
         xside = null;
         yside = null;
 

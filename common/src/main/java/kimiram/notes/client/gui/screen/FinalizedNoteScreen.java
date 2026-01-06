@@ -3,9 +3,11 @@ package kimiram.notes.client.gui.screen;
 import kimiram.notes.Image;
 import kimiram.notes.client.util.ImageHelper;
 import kimiram.notes.item.component.FinalizedNoteContent;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.ClickEvent;
@@ -92,15 +94,15 @@ public class FinalizedNoteScreen extends Screen {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (button == 0) {
-            Style style = this.getStyleAt(mouseX, mouseY);
+    public boolean mouseClicked(@NotNull MouseButtonEvent event, boolean isDoubleClick) {
+        if (event.button() == 0) {
+            Style style = this.getStyleAt(event.x(), event.y());
             if (style != null && handleComponentClicked(style)) {
                 return true;
             }
         }
 
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(event, isDoubleClick);
     }
 
     @Override

@@ -17,7 +17,7 @@ public class NoteItem extends Item {
     @Override
     public @NotNull InteractionResult use(Level level, Player player, @NotNull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             Notes.NotesClient.openNote(stack);
         }
         return InteractionResult.SUCCESS;

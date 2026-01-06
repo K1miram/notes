@@ -17,7 +17,7 @@ public class FinalizedNoteItem extends Item {
     @Override
     public @NotNull InteractionResult use(Level level, Player player, @NotNull InteractionHand usedHand) {
         ItemStack stack = player.getItemInHand(usedHand);
-        if (level.isClientSide) {
+        if (level.isClientSide()) {
             NotesClient.openFinalizedNote(stack);
         }
         return InteractionResult.SUCCESS;

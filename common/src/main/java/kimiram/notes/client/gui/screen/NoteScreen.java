@@ -1,18 +1,16 @@
 package kimiram.notes.client.gui.screen;
 
 import kimiram.notes.Image;
-import kimiram.notes.client.gui.cursor.StandardCursors;
 import kimiram.notes.client.gui.widget.ImageWidget;
-import kimiram.notes.client.gui.widget.TextFieldWidget;
 import kimiram.notes.item.component.NoteContent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.components.MultiLineEditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.component.DataComponentType;
-import net.minecraft.nbt.*;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -29,10 +27,9 @@ public class NoteScreen extends Screen {
 
     protected final ItemStack stack;
     protected DataComponentType<NoteContent> NOTE_COMPONENT_TYPE;
-    protected String text;
+    protected String text = "";
     protected List<Image> images = new ArrayList<>();
 
-    private TextFieldWidget textFieldWidget;
     private final List<ImageWidget> imageWidgets = new ArrayList<>();
 
     public NoteScreen(ItemStack stack, DataComponentType<NoteContent> componentType) {
@@ -60,23 +57,21 @@ public class NoteScreen extends Screen {
     }
 
     protected void saveNote() {
-        text = textFieldWidget.getText();
         updateImages();
         NoteContent noteContent = new NoteContent(text, images);
         stack.set(NOTE_COMPONENT_TYPE, noteContent);
     }
 
-    @Override
-    public void onClose() {
-        StandardCursors.ARROW.applyTo(Minecraft.getInstance().getWindow());
-        Minecraft.getInstance().setScreen(null);
-    }
+//    @Override
+//    public void onClose() {
+//        StandardCursors.ARROW.applyTo(Minecraft.getInstance().getWindow());
+//        Minecraft.getInstance().setScreen(null);
+//    }
 
     protected void finalizeNote() {
     }
 
     private void openAddImageScreen() {
-        text = textFieldWidget.getText();
         updateImages();
         Minecraft.getInstance().setScreen(new AddImageScreen(this));
     }
@@ -93,7 +88,6 @@ public class NoteScreen extends Screen {
 
     @Override
     protected void rebuildWidgets() {
-        text = textFieldWidget.getText();
         updateImages();
         imageWidgets.clear();
         super.rebuildWidgets();
@@ -113,8 +107,20 @@ public class NoteScreen extends Screen {
             addRenderableWidget(imageWidget);
         }
 
-        textFieldWidget = new TextFieldWidget(font, X_OFFSET, Y_OFFSET, 120, 160, text);
-        addRenderableWidget(textFieldWidget);
+        MultiLineEditBox editBox = MultiLineEditBox.builder()
+                .setShowDecorations(false)
+                .setTextColor(-16777216)
+                .setCursorColor(-16777216)
+                .setShowBackground(false)
+                .setTextShadow(false)
+                .setX(X_OFFSET - 4)
+                .setY(Y_OFFSET - 4)
+                .build(font, 128, 168, CommonComponents.EMPTY);
+        editBox.setCharacterLimit(1024);
+        editBox.setLineLimit(160 / 9);
+        editBox.setValueListener(newText -> text = newText);
+        editBox.setValue(text);
+        addRenderableWidget(editBox);
 
         Button addImageButton = new Button.Builder(
                 Component.translatable("gui.notes.add_image"), button -> openAddImageScreen()).build();
@@ -146,12 +152,9 @@ public class NoteScreen extends Screen {
         for (ImageWidget widget: imageWidgets) {
             if (widget.visible && widget.active) {
                 if (!changedCursor) {
-                    changedCursor = widget.changeCursor(mouseX, mouseY);
+                    changedCursor = widget.changeCursor(guiGraphics, mouseX, mouseY);
                 }
             }
-        }
-        if (!changedCursor) {
-            textFieldWidget.changeMouseCursor();
         }
     }
 
@@ -162,15 +165,5 @@ public class NoteScreen extends Screen {
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, ResourceLocation.fromNamespaceAndPath(MOD_ID, "textures/gui/note.png"),
                 (width - 128) / 2 - 16, 12, 0, 0,
                 256, 256, 256, 256, 256, 256);
-    }
-
-    @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        setDragging(false);
-        List<? extends GuiEventListener> children = children();
-        for (GuiEventListener child : children) {
-            child.mouseReleased(mouseX, mouseY, button);
-        }
-        return true;
     }
 }
