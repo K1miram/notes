@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -61,12 +61,6 @@ public class NoteScreen extends Screen {
         NoteContent noteContent = new NoteContent(text, images);
         stack.set(NOTE_COMPONENT_TYPE, noteContent);
     }
-
-//    @Override
-//    public void onClose() {
-//        StandardCursors.ARROW.applyTo(Minecraft.getInstance().getWindow());
-//        Minecraft.getInstance().setScreen(null);
-//    }
 
     protected void finalizeNote() {
     }
@@ -162,7 +156,7 @@ public class NoteScreen extends Screen {
     public void renderBackground(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
 
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, ResourceLocation.fromNamespaceAndPath(MOD_ID, "textures/gui/note.png"),
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(MOD_ID, "textures/gui/note.png"),
                 (width - 128) / 2 - 16, 12, 0, 0,
                 256, 256, 256, 256, 256, 256);
     }

@@ -9,7 +9,7 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 public class AddImageScreen extends Screen {
@@ -63,7 +63,7 @@ public class AddImageScreen extends Screen {
     public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
 
-        ResourceLocation id = ImageHelper.getImageID(imageUrl);
+        Identifier id = ImageHelper.getImageID(imageUrl);
         Image image = ImageHelper.getImage(imageUrl);
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, id,
                 image.x() + (width - 128) / 2 + 4, image.y() + 20, 0, 0,

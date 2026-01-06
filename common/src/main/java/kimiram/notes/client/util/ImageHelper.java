@@ -5,7 +5,7 @@ import kimiram.notes.Image;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -20,16 +20,16 @@ import static kimiram.notes.Constants.LOGGER;
 import static kimiram.notes.Constants.MOD_ID;
 
 public class ImageHelper {
-    private static final ResourceLocation DEFAULT_IMAGE = ResourceLocation.fromNamespaceAndPath(MOD_ID, "textures/gui/default_image.png");
+    private static final Identifier DEFAULT_IMAGE = Identifier.fromNamespaceAndPath(MOD_ID, "textures/gui/default_image.png");
 
-    private static final Map<String, ResourceLocation> loadingImages = new HashMap<>();
+    private static final Map<String, Identifier> loadingImages = new HashMap<>();
     private static final Map<String, DownloadedImage> downloadedImages = new HashMap<>();
     private static final Map<String, LoadedImage> loadedImages = new HashMap<>();
     private static int cnt = 0;
 
     public static void downloadImage(String url) {
         if (!loadingImages.containsKey(url) && !loadedImages.containsKey(url)) {
-            ResourceLocation id = ResourceLocation.fromNamespaceAndPath(MOD_ID, "image" + cnt);
+            Identifier id = Identifier.fromNamespaceAndPath(MOD_ID, "image" + cnt);
             cnt++;
             loadingImages.put(url, id);
             Thread downloadThread = new Thread(() -> {
@@ -52,7 +52,7 @@ public class ImageHelper {
     public static void loadImage(String url) {
         if (downloadedImages.containsKey(url)) {
             try {
-                ResourceLocation id = downloadedImages.get(url).id();
+                Identifier id = downloadedImages.get(url).id();
                 byte[] bytes = downloadedImages.get(url).bytes();
                 downloadedImages.remove(url);
 
@@ -81,7 +81,7 @@ public class ImageHelper {
         }
     }
 
-    public static ResourceLocation getImageID(String url) {
+    public static Identifier getImageID(String url) {
         if (loadedImages.containsKey(url)) {
             return loadedImages.get(url).id();
         }
@@ -98,9 +98,9 @@ public class ImageHelper {
         }
     }
 
-    private record DownloadedImage(ResourceLocation id, byte[] bytes) {
+    private record DownloadedImage(Identifier id, byte[] bytes) {
     }
 
-    private record LoadedImage(ResourceLocation id, int width, int height) {
+    private record LoadedImage(Identifier id, int width, int height) {
     }
 }

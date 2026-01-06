@@ -13,7 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.network.Filterable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -40,8 +40,7 @@ public class Notes {
             "note", (properties) -> new NoteItem(properties.stacksTo(1)));
 
     public static final DeferredItem<FinalizedNoteItem> FINALIZED_NOTE = ITEMS.registerItem(
-            "finalized_note", FinalizedNoteItem::new
-    );
+            "finalized_note", FinalizedNoteItem::new);
 
     public static final RecipeSerializer<NoteCloningRecipe> NOTE_CLONING_RECIPE_RECIPE_SERIALIZER = new CustomRecipe.Serializer<>(NoteCloningRecipe::new);
 
@@ -102,25 +101,25 @@ public class Notes {
     public void onRegisterEvent(RegisterEvent event) {
         event.register(Registries.RECIPE_SERIALIZER, helper -> {
             helper.register(
-                    ResourceLocation.fromNamespaceAndPath(MOD_ID, "crafting_special_notecloning"),
+                    Identifier.fromNamespaceAndPath(MOD_ID, "crafting_special_notecloning"),
                     NOTE_CLONING_RECIPE_RECIPE_SERIALIZER
             );
         });
 
         event.register(Registries.RECIPE_TYPE, helper -> {
             helper.register(
-                    ResourceLocation.fromNamespaceAndPath(MOD_ID, "crafting_special_notecloning"),
+                    Identifier.fromNamespaceAndPath(MOD_ID, "crafting_special_notecloning"),
                     NoteCloningRecipe.Type.INSTANCE
             );
         });
 
         event.register(Registries.DATA_COMPONENT_TYPE, helper -> {
             helper.register(
-                    ResourceLocation.fromNamespaceAndPath(MOD_ID, "note_content"),
+                    Identifier.fromNamespaceAndPath(MOD_ID, "note_content"),
                     NOTE_COMPONENT_TYPE
             );
             helper.register(
-                    ResourceLocation.fromNamespaceAndPath(MOD_ID, "finalized_note_content"),
+                    Identifier.fromNamespaceAndPath(MOD_ID, "finalized_note_content"),
                     FINALIZED_NOTE_COMPONENT_TYPE
             );
         });

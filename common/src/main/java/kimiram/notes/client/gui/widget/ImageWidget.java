@@ -1,7 +1,5 @@
 package kimiram.notes.client.gui.widget;
 
-import com.mojang.blaze3d.platform.Window;
-import com.mojang.blaze3d.platform.cursor.CursorTypes;
 import kimiram.notes.client.gui.cursor.StandardCursors;
 import kimiram.notes.client.util.ImageHelper;
 import net.minecraft.client.Minecraft;
@@ -11,7 +9,7 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 public class ImageWidget extends AbstractWidget {
@@ -66,7 +64,7 @@ public class ImageWidget extends AbstractWidget {
             guiGraphics.fill(x, y, x + 1, y + height, 0x5F5F5F5F);
         }
 
-        ResourceLocation id = ImageHelper.getImageID(imageUrl);
+        Identifier id = ImageHelper.getImageID(imageUrl);
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, id, getX(), getY(), 0, 0,
                 width, height, width, height, width, height);
     }
