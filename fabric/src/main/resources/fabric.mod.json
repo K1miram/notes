@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "notes",
-  "version": "${mod_version}+${minecraft_version}",
+  "version": "${mod_version}",
   "name": "Notes",
   "description": "${mod_description}",
   "authors": [
