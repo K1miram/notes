@@ -4,7 +4,7 @@ import kimiram.notes.Image;
 import kimiram.notes.client.gui.widget.ImageWidget;
 import kimiram.notes.item.component.NoteContent;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.MultiLineEditBox;
 import net.minecraft.client.gui.screens.Screen;
@@ -133,30 +133,30 @@ public class NoteScreen extends Screen {
     }
 
     @Override
-    public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        super.render(guiGraphics, mouseX, mouseY, partialTick);
+    public void extractRenderState(@NotNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
+        super.extractRenderState(graphics, mouseX, mouseY, partialTick);
 
         for (int i = imageWidgets.size() - 1; i >= 0; i--) {
             ImageWidget widget = imageWidgets.get(i);
             if (widget.visible && widget.active) {
-                widget.renderImage(guiGraphics);
+                widget.renderImage(graphics);
             }
         }
         boolean changedCursor = false;
         for (ImageWidget widget: imageWidgets) {
             if (widget.visible && widget.active) {
                 if (!changedCursor) {
-                    changedCursor = widget.changeCursor(guiGraphics, mouseX, mouseY);
+                    changedCursor = widget.changeCursor(graphics, mouseX, mouseY);
                 }
             }
         }
     }
 
     @Override
-    public void renderBackground(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        super.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
+    public void extractBackground(@NotNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
+        super.extractBackground(graphics, mouseX, mouseY, partialTick);
 
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(MOD_ID, "textures/gui/note.png"),
+        graphics.blit(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(MOD_ID, "textures/gui/note.png"),
                 (width - 128) / 2 - 16, 12, 0, 0,
                 256, 256, 256, 256, 256, 256);
     }

@@ -3,7 +3,7 @@ package kimiram.notes.client.gui.widget;
 import kimiram.notes.client.gui.cursor.StandardCursors;
 import kimiram.notes.client.util.ImageHelper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class ImageWidget extends AbstractWidget {
     private final String imageUrl;
@@ -51,11 +52,11 @@ public class ImageWidget extends AbstractWidget {
     }
 
     @Override
-    protected void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+    protected void extractWidgetRenderState(@NonNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
 
     }
 
-    public void renderImage(GuiGraphics guiGraphics) {
+    public void renderImage(GuiGraphicsExtractor guiGraphics) {
         if (isHoveredOrFocused()) {
             int x = getX(), y = getY();
             guiGraphics.fill(x, y, x + width, y + 1, 0x5F5F5F5F);
@@ -69,7 +70,7 @@ public class ImageWidget extends AbstractWidget {
                 width, height, width, height, width, height);
     }
 
-    public boolean changeCursor(GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    public boolean changeCursor(GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
         if (xside != null || yside != null) {
             if ((xside == Sides.LEFT && yside == Sides.TOP) || (xside == Sides.RIGHT && yside == Sides.BOTTOM)) {
                 guiGraphics.requestCursor(StandardCursors.RESIZE_NWSE);

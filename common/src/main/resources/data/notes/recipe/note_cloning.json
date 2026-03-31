@@ -1,4 +1,9 @@
 {
   "type": "notes:crafting_special_notecloning",
-  "category": "misc"
+  "category": "misc",
+  "material": "notes:note",
+  "source": "notes:finalized_note",
+  "result": {
+    "id": "notes:finalized_note"
+  }
 }

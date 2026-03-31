@@ -3,7 +3,7 @@ package kimiram.notes.client.gui.screen;
 import kimiram.notes.Image;
 import kimiram.notes.client.util.ImageHelper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
@@ -60,12 +60,12 @@ public class AddImageScreen extends Screen {
     }
 
     @Override
-    public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        super.render(guiGraphics, mouseX, mouseY, partialTick);
+    public void extractRenderState(@NotNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
+        super.extractRenderState(graphics, mouseX, mouseY, partialTick);
 
         Identifier id = ImageHelper.getImageID(imageUrl);
         Image image = ImageHelper.getImage(imageUrl);
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, id,
+        graphics.blit(RenderPipelines.GUI_TEXTURED, id,
                 image.x() + (width - 128) / 2 + 4, image.y() + 20, 0, 0,
                 image.width(), image.height(), image.width(), image.height());
     }

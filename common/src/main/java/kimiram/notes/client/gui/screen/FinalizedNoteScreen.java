@@ -4,7 +4,7 @@ import kimiram.notes.Image;
 import kimiram.notes.client.util.ImageHelper;
 import kimiram.notes.item.component.FinalizedNoteContent;
 import net.minecraft.client.gui.ActiveTextCollector;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -60,23 +60,23 @@ public class FinalizedNoteScreen extends Screen {
     }
 
     @Override
-    public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        super.render(guiGraphics, mouseX, mouseY, partialTick);
+    public void extractRenderState(@NotNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
+        super.extractRenderState(graphics, mouseX, mouseY, partialTick);
 
-        visitText(guiGraphics.textRenderer(GuiGraphics.HoveredTextEffects.TOOLTIP_AND_CURSOR));
+        visitText(graphics.textRenderer(GuiGraphicsExtractor.HoveredTextEffects.TOOLTIP_AND_CURSOR));
 
         for (int i = images.size() - 1; i >= 0; i--) {
             Image image = images.get(i);
             Identifier id = ImageHelper.getImageID(image.url());
-            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, id, image.x() + X_OFFSET, image.y() + 22,
+            graphics.blit(RenderPipelines.GUI_TEXTURED, id, image.x() + X_OFFSET, image.y() + 22,
                     0, 0, image.width(), image.height(),
                     image.width(), image.height(), image.width(), image.height());
         }
     }
 
     @Override
-    public void renderBackground(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        super.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
+    public void extractBackground(@NotNull GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
+        super.extractBackground(guiGraphics, mouseX, mouseY, partialTick);
 
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(MOD_ID, "textures/gui/note.png"),
                 (width - 128) / 2 - 16, 12, 0, 0,

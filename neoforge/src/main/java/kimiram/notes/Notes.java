@@ -42,10 +42,13 @@ public class Notes {
     public static final DeferredItem<FinalizedNoteItem> FINALIZED_NOTE = ITEMS.registerItem(
             "finalized_note", FinalizedNoteItem::new);
 
-    public static final RecipeSerializer<NoteCloningRecipe> NOTE_CLONING_RECIPE_RECIPE_SERIALIZER = new CustomRecipe.Serializer<>(NoteCloningRecipe::new);
+    public static final RecipeSerializer<NoteCloningRecipe> NOTE_CLONING_RECIPE_RECIPE_SERIALIZER = new RecipeSerializer<>(
+            NoteCloningRecipe.CODEC, NoteCloningRecipe.STREAM_CODEC);
 
-    public static final DataComponentType<NoteContent> NOTE_COMPONENT_TYPE = DataComponentType.<NoteContent>builder().persistent(NoteContent.CODEC).build();
-    public static final DataComponentType<FinalizedNoteContent> FINALIZED_NOTE_COMPONENT_TYPE = DataComponentType.<FinalizedNoteContent>builder().persistent(FinalizedNoteContent.CODEC).build();
+    public static final DataComponentType<NoteContent> NOTE_COMPONENT_TYPE = DataComponentType
+            .<NoteContent>builder().persistent(NoteContent.CODEC).build();
+    public static final DataComponentType<FinalizedNoteContent> FINALIZED_NOTE_COMPONENT_TYPE = DataComponentType
+            .<FinalizedNoteContent>builder().persistent(FinalizedNoteContent.CODEC).build();
 
     public Notes(IEventBus modEventBus) {
         ITEMS.register(modEventBus);

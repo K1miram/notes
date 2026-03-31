@@ -19,8 +19,8 @@ import net.minecraft.world.item.ItemStack;
 public class Notes implements ModInitializer {
     @Override
     public void onInitialize() {
-        PayloadTypeRegistry.playC2S().register(SaveNoteC2SPayload.TYPE, SaveNoteC2SPayload.CODEC);
-        PayloadTypeRegistry.playC2S().register(FinalizeNoteC2SPayload.TYPE, FinalizeNoteC2SPayload.CODEC);
+        PayloadTypeRegistry.serverboundPlay().register(SaveNoteC2SPayload.TYPE, SaveNoteC2SPayload.CODEC);
+        PayloadTypeRegistry.serverboundPlay().register(FinalizeNoteC2SPayload.TYPE, FinalizeNoteC2SPayload.CODEC);
 
         ServerPlayNetworking.registerGlobalReceiver(SaveNoteC2SPayload.TYPE, (payload, context) -> {
             ServerPlayer player = context.player();
