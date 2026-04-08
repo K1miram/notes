@@ -3,4 +3,4 @@ plugins {
     id 'net.neoforged.gradle.userdev' version "${neogradle_version}"
 }
 
-apply from: "https://raw.githubusercontent.com/K1miram/mod_gradle_scripts/${mod_gradle_script_version}/mod.gradle"
+apply from: "https://raw.githubusercontent.com/K1miram/mod-gradle-scripts/${mod_gradle_script_version}/mod.gradle"
