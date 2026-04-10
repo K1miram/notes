@@ -49,7 +49,7 @@ public class NoteScreen extends Screen {
         images = new ArrayList<>();
         for (ImageWidget widget: imageWidgets) {
             if (widget.visible && widget.active) {
-                images.add(new Image(widget.getImageUrl(),
+                images.add(new Image(widget.getImageUrl(), widget.getImageType(),
                         widget.getX() - X_OFFSET, widget.getY() - Y_OFFSET,
                         widget.getWidth(), widget.getHeight()));
             }
@@ -72,7 +72,7 @@ public class NoteScreen extends Screen {
 
     public void addImage(Image newImage) {
         images.add(newImage);
-        imageWidgets.add(new ImageWidget(newImage.url(),
+        imageWidgets.add(new ImageWidget(newImage.url(), newImage.type(),
                 newImage.x() + X_OFFSET, newImage.y() + Y_OFFSET,
                 newImage.width(), newImage.height(),
                 X_OFFSET, X_OFFSET + 120,
@@ -92,7 +92,7 @@ public class NoteScreen extends Screen {
         X_OFFSET = (width - 128) / 2 + 4;
 
         for (Image image: images) {
-            ImageWidget imageWidget = new ImageWidget(image.url(),
+            ImageWidget imageWidget = new ImageWidget(image.url(), image.type(),
                     image.x() + X_OFFSET, image.y() + Y_OFFSET,
                     image.width(), image.height(),
                     X_OFFSET, X_OFFSET + 120,

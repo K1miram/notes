@@ -4,3 +4,12 @@ plugins {
 }
 
 apply from: "https://raw.githubusercontent.com/K1miram/mod-gradle-scripts/${mod_gradle_script_version}/mod.gradle"
+
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    implementation "com.github.K1miram.imagelib:neoforge:${imagelib_version}"
+}

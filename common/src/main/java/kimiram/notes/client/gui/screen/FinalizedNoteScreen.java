@@ -1,7 +1,7 @@
 package kimiram.notes.client.gui.screen;
 
+import kimiram.imagelib.ImageLib;
 import kimiram.notes.Image;
-import kimiram.notes.client.util.ImageHelper;
 import kimiram.notes.item.component.FinalizedNoteContent;
 import net.minecraft.client.gui.ActiveTextCollector;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static kimiram.notes.Constants.MOD_ID;
+import static kimiram.notes.Constants.imageHelper;
 
 public class FinalizedNoteScreen extends Screen {
     private int X_OFFSET;
@@ -45,7 +46,7 @@ public class FinalizedNoteScreen extends Screen {
         }
 
         for (Image image: images) {
-            ImageHelper.downloadImage(image.url());
+            imageHelper.downloadImage(image.url(), image.type());
         }
     }
 
@@ -67,7 +68,7 @@ public class FinalizedNoteScreen extends Screen {
 
         for (int i = images.size() - 1; i >= 0; i--) {
             Image image = images.get(i);
-            Identifier id = ImageHelper.getImageID(image.url());
+            Identifier id = imageHelper.getImageId(image.url(), image.type());
             graphics.blit(RenderPipelines.GUI_TEXTURED, id, image.x() + X_OFFSET, image.y() + 22,
                     0, 0, image.width(), image.height(),
                     image.width(), image.height(), image.width(), image.height());

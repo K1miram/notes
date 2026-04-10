@@ -1,7 +1,7 @@
 package kimiram.notes.client.gui.widget;
 
+import kimiram.imagelib.ImageLib;
 import kimiram.notes.client.gui.cursor.StandardCursors;
-import kimiram.notes.client.util.ImageHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -13,8 +13,11 @@ import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 
+import static kimiram.notes.Constants.imageHelper;
+
 public class ImageWidget extends AbstractWidget {
     private final String imageUrl;
+    private final ImageLib.Type imageType;
 
     private double dx;
     private double dy;
@@ -29,12 +32,13 @@ public class ImageWidget extends AbstractWidget {
     private final int topBorder;
     private final int bottomBorder;
 
-    public ImageWidget(String url, int x, int y, int width, int height, int leftBorder, int rightBorder, int topBorder, int bottomBorder) {
+    public ImageWidget(String url, ImageLib.Type type, int x, int y, int width, int height, int leftBorder, int rightBorder, int topBorder, int bottomBorder) {
         super(x, y, width, height, Component.empty());
 
-        ImageHelper.downloadImage(url);
+        imageHelper.downloadImage(url, type);
 
         imageUrl = url;
+        imageType = type;
 
         dx = x;
         dy = y;
@@ -51,6 +55,10 @@ public class ImageWidget extends AbstractWidget {
         return imageUrl;
     }
 
+    public ImageLib.Type getImageType() {
+        return imageType;
+    }
+
     @Override
     protected void extractWidgetRenderState(@NonNull GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
 
@@ -65,7 +73,7 @@ public class ImageWidget extends AbstractWidget {
             guiGraphics.fill(x, y, x + 1, y + height, 0x5F5F5F5F);
         }
 
-        Identifier id = ImageHelper.getImageID(imageUrl);
+        Identifier id = imageHelper.getImageId(imageUrl, imageType);
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, id, getX(), getY(), 0, 0,
                 width, height, width, height, width, height);
     }
