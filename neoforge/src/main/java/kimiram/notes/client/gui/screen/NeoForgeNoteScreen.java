@@ -8,7 +8,7 @@ import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class NeoForgeNoteScreen extends NoteScreen {
     public NeoForgeNoteScreen(ItemStack stack) {
-        super(stack, Notes.NOTE_COMPONENT_TYPE);
+        super(stack);
     }
 
     @Override

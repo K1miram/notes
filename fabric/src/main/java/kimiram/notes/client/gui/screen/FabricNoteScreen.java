@@ -1,6 +1,5 @@
 package kimiram.notes.client.gui.screen;
 
-import kimiram.notes.item.ModDataComponents;
 import kimiram.notes.networking.FinalizeNoteC2SPayload;
 import kimiram.notes.networking.SaveNoteC2SPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -8,7 +7,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class FabricNoteScreen extends NoteScreen {
     public FabricNoteScreen(ItemStack stack) {
-        super(stack, ModDataComponents.NOTE_COMPONENT_TYPE);
+        super(stack);
     }
 
     @Override

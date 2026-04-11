@@ -20,23 +20,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static kimiram.notes.Constants.MOD_ID;
+import static kimiram.notes.item.component.ModDataComponents.NOTE_COMPONENT_TYPE;
 
 public class NoteScreen extends Screen {
     public int X_OFFSET;
     public final int Y_OFFSET = 20;
 
     protected final ItemStack stack;
-    protected DataComponentType<NoteContent> NOTE_COMPONENT_TYPE;
     protected String text = "";
     protected List<Image> images = new ArrayList<>();
 
     private final List<ImageWidget> imageWidgets = new ArrayList<>();
 
-    public NoteScreen(ItemStack stack, DataComponentType<NoteContent> componentType) {
+    public NoteScreen(ItemStack stack) {
         super(Component.literal("Note Screen"));
 
         this.stack = stack;
-        NOTE_COMPONENT_TYPE = componentType;
 
         NoteContent noteContent = stack.get(NOTE_COMPONENT_TYPE);
         if (noteContent != null) {

@@ -10,7 +10,6 @@ import kimiram.notes.networking.FinalizeNoteC2SPayload;
 import kimiram.notes.networking.SaveNoteC2SPayload;
 import kimiram.notes.recipe.NoteCloningRecipe;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -19,7 +18,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
@@ -31,6 +29,8 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
 import static kimiram.notes.Constants.MOD_ID;
+import static kimiram.notes.item.component.ModDataComponents.FINALIZED_NOTE_COMPONENT_TYPE;
+import static kimiram.notes.item.component.ModDataComponents.NOTE_COMPONENT_TYPE;
 
 @Mod(MOD_ID)
 public class Notes {
@@ -44,11 +44,6 @@ public class Notes {
 
     public static final RecipeSerializer<NoteCloningRecipe> NOTE_CLONING_RECIPE_RECIPE_SERIALIZER = new RecipeSerializer<>(
             NoteCloningRecipe.CODEC, NoteCloningRecipe.STREAM_CODEC);
-
-    public static final DataComponentType<NoteContent> NOTE_COMPONENT_TYPE = DataComponentType
-            .<NoteContent>builder().persistent(NoteContent.CODEC).build();
-    public static final DataComponentType<FinalizedNoteContent> FINALIZED_NOTE_COMPONENT_TYPE = DataComponentType
-            .<FinalizedNoteContent>builder().persistent(FinalizedNoteContent.CODEC).build();
 
     public Notes(IEventBus modEventBus) {
         ITEMS.register(modEventBus);
@@ -134,7 +129,7 @@ public class Notes {
         }
 
         public static void openFinalizedNote(ItemStack stack) {
-            Minecraft.getInstance().setScreen(new FinalizedNoteScreen(stack, FINALIZED_NOTE_COMPONENT_TYPE));
+            Minecraft.getInstance().setScreen(new FinalizedNoteScreen(stack));
         }
     }
 }
