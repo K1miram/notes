@@ -44,16 +44,17 @@ public class Notes implements ModInitializer {
 
         ServerPlayNetworking.registerGlobalReceiver(SaveNoteC2SPayload.TYPE, (payload, context) -> {
             ServerPlayer player = context.player();
-            if (player.getItemInHand(InteractionHand.MAIN_HAND).is(ModItems.NOTE)) {
-                player.setItemInHand(InteractionHand.MAIN_HAND, payload.stack());
-            } else if (player.getItemInHand(InteractionHand.OFF_HAND).is(ModItems.NOTE)) {
-                player.setItemInHand(InteractionHand.OFF_HAND, payload.stack());
-            }
+            ItemStack stack = payload.stack();
+            InteractionHand hand = payload.hand();
+            player.setItemInHand(hand, stack);
         });
+
+        PayloadTypeRegistry.serverboundPlay().register(FinalizeNoteC2SPayload.TYPE, FinalizeNoteC2SPayload.CODEC);
 
         ServerPlayNetworking.registerGlobalReceiver(FinalizeNoteC2SPayload.TYPE, (payload, context) -> {
             ServerPlayer player = context.player();
             ItemStack stack = payload.stack();
+            InteractionHand hand = payload.hand();
             NoteContent noteContent = stack.get(NOTE_COMPONENT_TYPE);
             stack.remove(NOTE_COMPONENT_TYPE);
             ItemStack newStack = stack.transmuteCopy(ModItems.FINALIZED_NOTE);
@@ -66,6 +67,8 @@ public class Notes implements ModInitializer {
             } else if (player.getItemInHand(InteractionHand.OFF_HAND).is(ModItems.NOTE)) {
                 player.setItemInHand(InteractionHand.OFF_HAND, newStack);
             }
+            player.setItemInHand(hand, newStack);
+        });
         });
 
         ModItems.initialize();

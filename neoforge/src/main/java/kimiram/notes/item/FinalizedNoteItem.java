@@ -1,6 +1,6 @@
 package kimiram.notes.item;
 
-import kimiram.notes.Notes;
+import kimiram.notes.NotesClient;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -18,7 +18,7 @@ public class FinalizedNoteItem extends Item {
     public @NotNull InteractionResult use(Level level, Player player, @NotNull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (level.isClientSide()) {
-            Notes.NotesClient.openFinalizedNote(stack);
+            NotesClient.openFinalizedNote(stack);
         }
         return InteractionResult.SUCCESS;
     }

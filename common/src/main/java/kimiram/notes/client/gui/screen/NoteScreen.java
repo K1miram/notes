@@ -9,7 +9,6 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.MultiLineEditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -30,12 +29,17 @@ public class NoteScreen extends Screen {
     protected String text = "";
     protected List<Image> images = new ArrayList<>();
 
+    protected final OnNoteSaving onNoteSaving;
+    protected final OnNoteFinalize onNoteFinalize;
+
     private final List<ImageWidget> imageWidgets = new ArrayList<>();
 
-    public NoteScreen(ItemStack stack) {
+    public NoteScreen(ItemStack stack, OnNoteSaving onNoteSaving, OnNoteFinalize onNoteFinalize) {
         super(Component.literal("Note Screen"));
 
         this.stack = stack;
+        this.onNoteSaving = onNoteSaving;
+        this.onNoteFinalize = onNoteFinalize;
 
         NoteContent noteContent = stack.get(NOTE_COMPONENT_TYPE);
         if (noteContent != null) {
@@ -61,7 +65,17 @@ public class NoteScreen extends Screen {
         stack.set(NOTE_COMPONENT_TYPE, noteContent);
     }
 
+    @Override
+    public void onClose() {
+        saveNote();
+        onNoteSaving.sendPacket(stack);
+        super.onClose();
+    }
+
     protected void finalizeNote() {
+        saveNote();
+        onNoteFinalize.sendPacket(stack);
+        super.onClose();
     }
 
     private void openAddImageScreen() {
@@ -158,5 +172,13 @@ public class NoteScreen extends Screen {
         graphics.blit(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(MOD_ID, "textures/gui/note.png"),
                 (width - 128) / 2 - 16, 12, 0, 0,
                 256, 256, 256, 256, 256, 256);
+    }
+
+    public interface OnNoteSaving {
+        void sendPacket(ItemStack stack);
+    }
+
+    public interface OnNoteFinalize {
+        void sendPacket(ItemStack stack);
     }
 }

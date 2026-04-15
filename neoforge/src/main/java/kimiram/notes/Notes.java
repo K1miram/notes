@@ -57,24 +57,20 @@ public class Notes {
     public void registerPackets(RegisterPayloadHandlersEvent event) {
         PayloadRegistrar registrar = event.registrar(MOD_ID);
 
-        registrar.playToServer(
-                SaveNoteC2SPayload.TYPE,
-                SaveNoteC2SPayload.CODEC,
-                (payload, context) -> {
-                    Player player = context.player();
-                    if (player.getItemInHand(InteractionHand.MAIN_HAND).is(NOTE.get())) {
-                        player.setItemInHand(InteractionHand.MAIN_HAND, payload.stack());
-                    } else if (player.getItemInHand(InteractionHand.OFF_HAND).is(NOTE.get())) {
-                        player.setItemInHand(InteractionHand.OFF_HAND, payload.stack());
-                    }
-                });
-
-        registrar.playToServer(
-                FinalizeNoteC2SPayload.TYPE,
-                FinalizeNoteC2SPayload.CODEC,
+        registrar.playToServer(SaveNoteC2SPayload.TYPE, SaveNoteC2SPayload.CODEC,
                 (payload, context) -> {
                     Player player = context.player();
                     ItemStack stack = payload.stack();
+                    InteractionHand hand = payload.hand();
+                    player.setItemInHand(hand, stack);
+                }
+        );
+
+        registrar.playToServer(FinalizeNoteC2SPayload.TYPE, FinalizeNoteC2SPayload.CODEC,
+                (payload, context) -> {
+                    Player player = context.player();
+                    ItemStack stack = payload.stack();
+                    InteractionHand hand = payload.hand();
                     NoteContent noteContent = stack.get(NOTE_COMPONENT_TYPE);
                     stack.remove(NOTE_COMPONENT_TYPE);
                     ItemStack newStack = stack.transmuteCopy(FINALIZED_NOTE);
@@ -86,6 +82,9 @@ public class Notes {
                         player.setItemInHand(InteractionHand.MAIN_HAND, newStack);
                     } else if (player.getItemInHand(InteractionHand.OFF_HAND).is(NOTE)) {
                         player.setItemInHand(InteractionHand.OFF_HAND, newStack);
+                    player.setItemInHand(hand, newStack);
+                }
+        );
                     }
                 });
     }
@@ -121,15 +120,5 @@ public class Notes {
                     FINALIZED_NOTE_COMPONENT_TYPE
             );
         });
-    }
-
-    public static class NotesClient {
-        public static void openNote(ItemStack stack) {
-            Minecraft.getInstance().setScreen(new NeoForgeNoteScreen(stack));
-        }
-
-        public static void openFinalizedNote(ItemStack stack) {
-            Minecraft.getInstance().setScreen(new FinalizedNoteScreen(stack));
-        }
     }
 }
