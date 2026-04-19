@@ -1,3 +1,14 @@
-apply plugin: 'fabric-loom'
+apply plugin: 'net.fabricmc.fabric-loom-remap'
 
-apply from: "https://raw.githubusercontent.com/henkelmax/mod-gradle-scripts/${mod_gradle_script_version}/mod.gradle"
+apply from: "https://raw.githubusercontent.com/K1miram/mod-gradle-scripts/${mod_gradle_script_version}/mod.gradle"
+
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    modImplementation("com.github.K1miram.imagelib:fabric:${imagelib_version}") {
+        transitive false
+    }
+}

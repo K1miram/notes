@@ -1,0 +1,15 @@
+{
+  "model": {
+    "type": "minecraft:condition",
+    "property": "minecraft:has_component",
+    "component": "notes:notebook_content",
+    "on_true": {
+      "type": "minecraft:model",
+      "model": "notes:item/notebook"
+    },
+    "on_false": {
+      "type": "minecraft:model",
+      "model": "notes:item/empty_notebook"
+    }
+  }
+}

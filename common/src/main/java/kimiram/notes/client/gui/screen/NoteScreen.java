@@ -9,7 +9,6 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.MultiLineEditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -20,23 +19,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static kimiram.notes.Constants.MOD_ID;
+import static kimiram.notes.item.component.ModDataComponents.NOTE_COMPONENT_TYPE;
 
 public class NoteScreen extends Screen {
     public int X_OFFSET;
     public final int Y_OFFSET = 20;
 
     protected final ItemStack stack;
-    protected DataComponentType<NoteContent> NOTE_COMPONENT_TYPE;
     protected String text = "";
     protected List<Image> images = new ArrayList<>();
 
+    protected final OnNoteSaving onNoteSaving;
+    protected final OnNoteFinalize onNoteFinalize;
+
     private final List<ImageWidget> imageWidgets = new ArrayList<>();
 
-    public NoteScreen(ItemStack stack, DataComponentType<NoteContent> componentType) {
+    public NoteScreen(ItemStack stack, OnNoteSaving onNoteSaving, OnNoteFinalize onNoteFinalize) {
         super(Component.literal("Note Screen"));
 
         this.stack = stack;
-        NOTE_COMPONENT_TYPE = componentType;
+        this.onNoteSaving = onNoteSaving;
+        this.onNoteFinalize = onNoteFinalize;
 
         NoteContent noteContent = stack.get(NOTE_COMPONENT_TYPE);
         if (noteContent != null) {
@@ -49,9 +52,11 @@ public class NoteScreen extends Screen {
         images = new ArrayList<>();
         for (ImageWidget widget: imageWidgets) {
             if (widget.visible && widget.active) {
-                images.add(new Image(widget.getImageUrl(),
+                images.add(new Image(
+                        widget.getImageUrl(), widget.getImageType(),
                         widget.getX() - X_OFFSET, widget.getY() - Y_OFFSET,
-                        widget.getWidth(), widget.getHeight()));
+                        widget.getWidth(), widget.getHeight())
+                );
             }
         }
     }
@@ -62,7 +67,17 @@ public class NoteScreen extends Screen {
         stack.set(NOTE_COMPONENT_TYPE, noteContent);
     }
 
+    @Override
+    public void onClose() {
+        saveNote();
+        onNoteSaving.sendPacket(stack);
+        super.onClose();
+    }
+
     protected void finalizeNote() {
+        saveNote();
+        onNoteFinalize.sendPacket(stack);
+        super.onClose();
     }
 
     private void openAddImageScreen() {
@@ -72,11 +87,13 @@ public class NoteScreen extends Screen {
 
     public void addImage(Image newImage) {
         images.add(newImage);
-        imageWidgets.add(new ImageWidget(newImage.url(),
+        imageWidgets.add(new ImageWidget(
+                newImage.url(), newImage.type(),
                 newImage.x() + X_OFFSET, newImage.y() + Y_OFFSET,
                 newImage.width(), newImage.height(),
                 X_OFFSET, X_OFFSET + 120,
-                Y_OFFSET, Y_OFFSET + 160));
+                Y_OFFSET, Y_OFFSET + 160)
+        );
         repositionElements();
     }
 
@@ -92,11 +109,13 @@ public class NoteScreen extends Screen {
         X_OFFSET = (width - 128) / 2 + 4;
 
         for (Image image: images) {
-            ImageWidget imageWidget = new ImageWidget(image.url(),
+            ImageWidget imageWidget = new ImageWidget(
+                    image.url(), image.type(),
                     image.x() + X_OFFSET, image.y() + Y_OFFSET,
                     image.width(), image.height(),
                     X_OFFSET, X_OFFSET + 120,
-                    Y_OFFSET, Y_OFFSET + 160);
+                    Y_OFFSET, Y_OFFSET + 160
+            );
             imageWidgets.add(imageWidget);
             addRenderableWidget(imageWidget);
         }
@@ -159,5 +178,13 @@ public class NoteScreen extends Screen {
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, Identifier.fromNamespaceAndPath(MOD_ID, "textures/gui/note.png"),
                 (width - 128) / 2 - 16, 12, 0, 0,
                 256, 256, 256, 256, 256, 256);
+    }
+
+    public interface OnNoteSaving {
+        void sendPacket(ItemStack stack);
+    }
+
+    public interface OnNoteFinalize {
+        void sendPacket(ItemStack stack);
     }
 }

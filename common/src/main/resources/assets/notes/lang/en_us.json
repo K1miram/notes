@@ -1,6 +1,8 @@
 {
   "item.notes.note": "Note",
   "item.notes.finalized_note": "Note",
+  "item.notes.notebook": "Notebook",
+  "item.notes.finalized_notebook": "Notebook",
   "gui.notes.add_image": "Add Image",
   "gui.notes.apply": "Apply",
   "gui.notes.finalize": "Finalize"

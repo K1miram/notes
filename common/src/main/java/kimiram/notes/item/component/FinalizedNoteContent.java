@@ -7,11 +7,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.server.network.Filterable;
 
+import java.util.Collections;
 import java.util.List;
 
 public record FinalizedNoteContent(Filterable<Component> text, List<Image> images) {
     public static final Codec<FinalizedNoteContent> CODEC = RecordCodecBuilder.create(builder -> builder.group(
-            Filterable.codec(ComponentSerialization.CODEC).fieldOf("text").forGetter(FinalizedNoteContent::text),
-            Image.CODEC.listOf().fieldOf("images").forGetter(FinalizedNoteContent::images)
+            Filterable.codec(ComponentSerialization.CODEC).fieldOf("text").orElse(Filterable.passThrough(Component.empty())).forGetter(FinalizedNoteContent::text),
+            Image.CODEC.listOf().fieldOf("images").orElse(Collections.emptyList()).forGetter(FinalizedNoteContent::images)
     ).apply(builder, FinalizedNoteContent::new));
 }
