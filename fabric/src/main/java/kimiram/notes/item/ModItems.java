@@ -24,12 +24,25 @@ public class ModItems {
         return item;
     }
 
+    // TODO colored notebooks
+
     public static final Item NOTE = register("note", NoteItem::new, new Item.Properties().stacksTo(1));
     public static final Item FINALIZED_NOTE = register("finalized_note", FinalizedNoteItem::new, new Item.Properties());
+    public static final Item NOTEBOOK = register(
+            "notebook",
+            properties -> new NotebookItem(properties, ResourceLocation.fromNamespaceAndPath(MOD_ID, "textures/gui/notebook.png")),
+            new Item.Properties().stacksTo(1)
+    );
+    public static final Item FINALIZED_NOTEBOOK = register(
+            "finalized_notebook",
+            properties -> new FinalizedNotebookItem(properties, ResourceLocation.fromNamespaceAndPath(MOD_ID, "textures/gui/notebook.png")),
+            new Item.Properties()
+    );
 
     public static void initialize() {
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(entries -> {
             entries.accept(NOTE);
+            entries.accept(NOTEBOOK);
         });
     }
 }

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:leather",
+    "minecraft:leather",
+    "minecraft:leather"
+  ],
+  "result": {
+    "id": "notes:notebook",
+    "count": 1
+  }
+}
