@@ -18,8 +18,7 @@ public class NoteItem extends Item {
     public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, @NotNull InteractionHand usedHand) {
         ItemStack stack = player.getItemInHand(usedHand);
         if (level.isClientSide) {
-            NotesClient.openNote(stack);
-            return InteractionResultHolder.pass(stack);
+            NotesClient.openNote(stack, usedHand);
         }
         return InteractionResultHolder.success(stack);
     }

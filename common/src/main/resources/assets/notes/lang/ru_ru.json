@@ -1,6 +1,8 @@
 {
   "item.notes.note": "Записка",
   "item.notes.finalized_note": "Записка",
+  "item.notes.notebook": "Блокнот",
+  "item.notes.finalized_notebook": "Блокнот",
   "gui.notes.add_image": "Добавить Картинку",
   "gui.notes.apply": "Применить",
   "gui.notes.finalize": "Завершить"

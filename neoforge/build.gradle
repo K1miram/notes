@@ -1,17 +1,17 @@
 plugins {
     id 'java-library'
-    id 'net.neoforged.gradle.userdev' version '7.1.12'
+    id 'net.neoforged.gradle.userdev' version "${neogradle_version}"
 }
 
-apply from: "https://raw.githubusercontent.com/henkelmax/mod-gradle-scripts/${mod_gradle_script_version}/mod.gradle"
+apply from: "https://raw.githubusercontent.com/K1miram/mod-gradle-scripts/${mod_gradle_script_version}/mod.gradle"
 
-processResources {
-    from("${project(":common").projectDir}/src/main/resources")
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
 
-    filesMatching("META-INF/neoforge.mods.toml") {
-        expand  "mod_version"       : mod_version,
-                "minecraft_version" : minecraft_version,
-                "mod_description"   : mod_description,
-                "neoforge_version"  : neoforge_version
+dependencies {
+    implementation("com.github.K1miram.imagelib:neoforge:${imagelib_version}") {
+        transitive false
     }
 }

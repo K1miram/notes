@@ -1,12 +1,10 @@
 package kimiram.notes.client.gui.screen;
 
 import kimiram.notes.Image;
-import kimiram.notes.client.util.ImageHelper;
 import kimiram.notes.item.component.FinalizedNoteContent;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
@@ -21,30 +19,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static kimiram.notes.Constants.MOD_ID;
+import static kimiram.notes.client.ClientConstants.imageHelper;
+import static kimiram.notes.item.component.ModDataComponents.FINALIZED_NOTE_COMPONENT_TYPE;
 
 public class FinalizedNoteScreen extends Screen {
     private int X_OFFSET;
 
-    protected DataComponentType<FinalizedNoteContent> FINALIZED_NOTE_COMPONENT_TYPE;
     private final FormattedText text;
     private List<FormattedCharSequence> lines;
     private List<Image> images = new ArrayList<>();
 
-    public FinalizedNoteScreen(ItemStack stack, DataComponentType<FinalizedNoteContent> componentType) {
+    public FinalizedNoteScreen(ItemStack stack) {
         super(Component.literal("Finalized Note Screen"));
-
-        FINALIZED_NOTE_COMPONENT_TYPE = componentType;
 
         FinalizedNoteContent content = stack.get(FINALIZED_NOTE_COMPONENT_TYPE);
         if (content != null) {
             text = content.text().get(false);
             images = content.images();
         } else {
-            text = FormattedText.EMPTY;
+            text = Component.empty();
         }
 
         for (Image image: images) {
-            ImageHelper.downloadImage(image.url());
+            imageHelper.downloadImage(image.url(), image.type());
         }
     }
 
@@ -69,7 +66,7 @@ public class FinalizedNoteScreen extends Screen {
 
         for (int i = images.size() - 1; i >= 0; i--) {
             Image image = images.get(i);
-            ResourceLocation id = ImageHelper.getImageID(image.url());
+            ResourceLocation id = imageHelper.getImageId(image.url(), image.type());
             guiGraphics.blit(id, image.x() + X_OFFSET, image.y() + 22,
                     image.width(), image.height(), 0, 0,
                     image.width(), image.height(), image.width(), image.height());
