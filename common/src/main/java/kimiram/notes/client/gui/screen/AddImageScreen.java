@@ -15,7 +15,7 @@ import static kimiram.notes.client.ClientConstants.imageHelper;
 
 public class AddImageScreen extends Screen {
     private final NoteScreen parent;
-    private String imageUrl;
+    private String imageUrl = "";
     private ImageLib.Type imageType = ImageLib.Type.STATIC_IMAGE;
 
     protected AddImageScreen(NoteScreen parent) {
