@@ -11,12 +11,21 @@ import org.slf4j.LoggerFactory;
 public class Constants {
     public static final String MOD_ID = "notes";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+    public static int mapHand(InteractionHand hand) {
+        InteractionHand[] hands = InteractionHand.values();
+        for (int i = 0; i < hands.length; i++) {
+            if (hands[i] == hand) {
+                return i;
+            }
+        }
+        return 0;
+    }
     public static final StreamCodec<ByteBuf, InteractionHand> HAND_STREAM_CODEC = ByteBufCodecs.idMapper(
             ByIdMap.continuous(
-                    hand -> hand == InteractionHand.MAIN_HAND ? 0 : 1,
+                    Constants::mapHand,
                     InteractionHand.values(),
                     ByIdMap.OutOfBoundsStrategy.ZERO
             ),
-            hand -> hand == InteractionHand.MAIN_HAND ? 0 : 1
+            Constants::mapHand
     );
 }
