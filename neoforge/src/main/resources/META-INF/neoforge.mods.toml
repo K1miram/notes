@@ -13,7 +13,7 @@ description='''${mod_description}'''
 [[dependencies.${mod_id}]]
 modId="neoforge"
 type="required"
-versionRange="[26.1.0.8-beta,)"
+versionRange="[26.2.0.0,)"
 ordering="NONE"
 side="BOTH"
 
@@ -27,6 +27,6 @@ side="BOTH"
 [[dependencies.${mod_id}]]
 modId="imagelib"
 type="required"
-versionRange="[0.0.4,)"
+versionRange="[0.0.5,)"
 ordering="NONE"
 side="BOTH"

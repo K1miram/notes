@@ -3,7 +3,6 @@ package kimiram.notes.client.gui.screen;
 import kimiram.notes.Image;
 import kimiram.notes.client.gui.widget.ImageWidget;
 import kimiram.notes.item.component.NoteContent;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.MultiLineEditBox;
@@ -80,7 +79,7 @@ public class NoteScreen extends Screen {
 
     private void openAddImageScreen() {
         updateImages();
-        Minecraft.getInstance().setScreen(new AddImageScreen(this));
+        minecraft.gui.setScreen(new AddImageScreen(this));
     }
 
     public void addImage(Image newImage) {

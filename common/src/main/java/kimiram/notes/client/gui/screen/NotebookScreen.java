@@ -4,7 +4,6 @@ import kimiram.notes.Image;
 import kimiram.notes.client.gui.widget.TrashCanButton;
 import kimiram.notes.item.component.FinalizedNoteContent;
 import kimiram.notes.item.component.NotebookContent;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ActiveTextCollector;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
@@ -170,12 +169,12 @@ public class NotebookScreen extends Screen {
 
     private void removeLeftPage() {
         onPageRemove.sendPacket(currentPage);
-        Minecraft.getInstance().setScreen(null);
+        minecraft.gui.setScreen(null);
     }
 
     private void removeRightPage() {
         onPageRemove.sendPacket(currentPage + 1);
-        Minecraft.getInstance().setScreen(null);
+        minecraft.gui.setScreen(null);
     }
 
     private void moveBack() {

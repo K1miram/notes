@@ -2,7 +2,6 @@ package kimiram.notes.client.gui.screen;
 
 import kimiram.imagelib.ImageLib;
 import kimiram.notes.Image;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
@@ -27,7 +26,7 @@ public class AddImageScreen extends Screen {
 
     @Override
     public void onClose() {
-        Minecraft.getInstance().setScreen(parent);
+        minecraft.gui.setScreen(parent);
     }
 
     private void addImageAndClose() {

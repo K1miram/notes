@@ -21,7 +21,7 @@ public class NotesClient implements ClientModInitializer {
     }
 
     public static void openNote(ItemStack stack, InteractionHand hand) {
-        Minecraft.getInstance().setScreen(new NoteScreen(stack, newStack -> saveNote(newStack, hand), newStack -> finalizeNote(newStack, hand)));
+        Minecraft.getInstance().gui.setScreen(new NoteScreen(stack, newStack -> saveNote(newStack, hand), newStack -> finalizeNote(newStack, hand)));
     }
 
     private static void saveNote(ItemStack stack, InteractionHand hand) {
@@ -33,11 +33,11 @@ public class NotesClient implements ClientModInitializer {
     }
 
     public static void openFinalizedNote(ItemStack stack) {
-        Minecraft.getInstance().setScreen(new FinalizedNoteScreen(stack));
+        Minecraft.getInstance().gui.setScreen(new FinalizedNoteScreen(stack));
     }
 
     public static void openNotebook(ItemStack stack, InteractionHand hand, Identifier id) {
-        Minecraft.getInstance().setScreen(new NotebookScreen(
+        Minecraft.getInstance().gui.setScreen(new NotebookScreen(
                 stack,
                 id,
                 pageIndex -> removePage(hand, pageIndex),
@@ -54,6 +54,6 @@ public class NotesClient implements ClientModInitializer {
     }
 
     public static void openFinalizedNotebook(ItemStack stack, Identifier id) {
-        Minecraft.getInstance().setScreen(new NotebookScreen(stack, id));
+        Minecraft.getInstance().gui.setScreen(new NotebookScreen(stack, id));
     }
 }
