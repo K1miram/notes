@@ -24,7 +24,7 @@ public class ModItems {
         return item;
     }
 
-    // TODO colored bundles
+    // TODO colored notebooks
 
     public static final Item NOTE = register("note", NoteItem::new, new Item.Properties().stacksTo(1));
     public static final Item FINALIZED_NOTE = register("finalized_note", FinalizedNoteItem::new, new Item.Properties());
